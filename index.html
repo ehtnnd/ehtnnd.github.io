@@ -30,6 +30,7 @@
         }
 
 		#input-container {
+			color:white;
 			position: fixed;
 			top: 0%;
 			left: 50%;
@@ -50,14 +51,14 @@
     <title>Drag & Drop or Paste YouTube URL</title>
 </head>
 	<body>
-		<div id="input-container" style="color:white">Drag & Drop or Paste YouTube URL</div>
+		<div id="input-container">Drag & Drop or Paste YouTube URL</div>
 		<div id="custom-alert" class="custom-alert"></div>
 		<iframe id="my_frame" style="height: 0%; width: 0%;" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 		<script>
 			const inputContainer = document.getElementById("input-container");
 			const alertBox = document.getElementById('custom-alert');
 			const frame = document.getElementById("my_frame");
-			const regex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|playlist\?list=)|youtu\.be\/)[A-Za-z0-9_\-\=\&]+(&t=\d+s)?$/i;
+			const regex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|playlist\?list=|live\/)|youtu\.be\/)[A-Za-z0-9_\-\=\&]+(&t=\d+s)?$/i;
 			function showAlert(message) {
 				alertBox.innerHTML = message;
 				alertBox.style.display = 'block';
@@ -125,6 +126,10 @@
 				if (text.includes("playlist?list=")) {
 					embedUrl = text.replace(/(www\.)?youtube\.com\/playlist\?list=/i, "www.youtube.com/embed/playlist?list=");
 					document.title = "YouTube Playlist";
+				}
+				if (text.includes("youtube.com/live/")) {
+					videoId = text.split("youtube.com/live/")[1];
+					embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 				}
 				if (embedUrl) {
 					frame.src = embedUrl;
