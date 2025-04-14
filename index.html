@@ -96,7 +96,7 @@
 				}
 				if (text.match(/^(https?:\/\/)?(www\.)?twitch\.tv\/videos\/\d+/i)) {
 					let vidId = text.replace(/^(https?:\/\/)?(www\.)?twitch\.tv\/videos\//i, "");
-					vidId.replace(/\?filter=archives\&sort\=time/i, "");
+					vidId = vidId.replace(/\?filter=archives\&sort\=time/i, "");
 					console.log("vidId: " + vidId);
 					let popout = 'https://player.twitch.tv/?enableExtensions=true&parent=twitch.tv&player=popout&quality=720p&video=' + vidId;
 					window.open(popout, '_blank');
