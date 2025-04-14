@@ -58,6 +58,9 @@
 			const inputContainer = document.getElementById("input-container");
 			const alertBox = document.getElementById('custom-alert');
 			const frame = document.getElementById("my_frame");
+			/*
+			(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|live\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})
+			*/
 			const regex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|playlist\?list=|live\/)|youtu\.be\/)[A-Za-z0-9_\-\=\&]+(&t=\d+s)?$/i;
 			function showAlert(message) {
 				alertBox.innerHTML = message;
@@ -91,8 +94,9 @@
 					if (extractedUrl.match(regex)) EmbedFun(extractedUrl);
 					return;
 				}
-				if (text.match(/^(https?:\/\/)?(www\.)?twitch\.tv\/videos\/\d+$/i)) {
+				if (text.match(/^(https?:\/\/)?(www\.)?twitch\.tv\/videos\/\d+/i)) {
 					let vidId = text.replace(/^(https?:\/\/)?(www\.)?twitch\.tv\/videos\//i, "");
+					vidId.replace(/\?filter=archives\&sort\=time/i, "");
 					console.log("vidId: " + vidId);
 					let popout = 'https://player.twitch.tv/?enableExtensions=true&parent=twitch.tv&player=popout&quality=720p&video=' + vidId;
 					window.open(popout, '_blank');
@@ -169,6 +173,7 @@
 			document.addEventListener("drop", (event) => {
 				event.preventDefault();
 				const data = event.dataTransfer.getData("text");
+				console.log("drop: " + data);
 				if (data) EmbedFun(data.trim());
 				inputContainer.style.backgroundColor = 'rgba(0, 0, 50, 0.8)';
 				if (isYouTubeEmbed(frame)) goAlpha()
@@ -176,6 +181,7 @@
 			document.addEventListener("paste", (event) => {
 				event.preventDefault();
 				const clipboardContent = event.clipboardData.getData("text");
+				console.log("paste: " + clipboardContent);
 				if (clipboardContent) EmbedFun(clipboardContent.trim());
 				if (isYouTubeEmbed(frame)) goAlpha()
 			});
